@@ -6,8 +6,8 @@ metadata:
   labels:
     app: openjdk-web-basic-s2i
     application: openjdk-app
-  name: openjdk-app
-  namespace: dev
+  name: openjdk-app-test
+  namespace: test
 spec:
   replicas: 1
   revisionHistoryLimit: 10
