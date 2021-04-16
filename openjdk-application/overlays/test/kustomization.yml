@@ -4,3 +4,6 @@ kind: Kustomization
 Namespace: test
 bases: 
 - ../../base
+
+patches:
+- patch.yml

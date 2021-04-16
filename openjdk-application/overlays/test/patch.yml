@@ -3,5 +3,4 @@ kind: Route
 metadata:
   name: openjdk-app
 spec:
-  host: "openjdk-app-dev.apps.cluster-26c2.dynamic.opentlc.com"
-
+  host: "openjdk-app-test.apps.cluster-26c2.dynamic.opentlc.com"
