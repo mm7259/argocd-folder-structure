@@ -1,0 +1,7 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: openjdk-app
+spec:
+  host: "openjdk-app-dev.apps.cluster-26c2.dynamic.opentlc.com"
+

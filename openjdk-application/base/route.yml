@@ -11,9 +11,8 @@ metadata:
   name: openjdk-app
 spec:
   host: ""
-  subdomain: ""
   to:
-    kind: ""
+    kind: Service
     name: openjdk-app
     weight: null
 
