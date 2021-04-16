@@ -1,0 +1,19 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    description: Route for application's http service.
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  labels:
+    app: openjdk-web-basic-s2i
+    application: openjdk-app
+  name: openjdk-app
+spec:
+  host: ""
+  subdomain: ""
+  to:
+    kind: ""
+    name: openjdk-app
+    weight: null
+

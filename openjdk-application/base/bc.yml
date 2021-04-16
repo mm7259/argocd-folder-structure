@@ -1,0 +1,37 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  labels:
+    app: openjdk-web-basic-s2i
+    application: openjdk-app
+  name: openjdk-app
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: openjdk-app:latest
+  postCommit: {}
+  resources: {}
+  source:
+    contextDir: undertow-servlet
+    git:
+      ref: master
+      uri: https://github.com/jboss-openshift/openshift-quickstarts
+    type: Git
+  strategy:
+    sourceStrategy:
+      forcePull: true
+      from:
+        kind: ImageStreamTag
+        name: java:latest
+        namespace: openshift
+    type: Source
+  triggers:
+  - imageChange: {}
+    type: ImageChange
+  - type: ConfigChange
+

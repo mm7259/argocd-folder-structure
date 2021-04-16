@@ -1,0 +1,55 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  labels:
+    app: openjdk-web-basic-s2i
+    application: openjdk-app
+  name: openjdk-app
+spec:
+  replicas: 1
+  selector:
+    deploymentConfig: openjdk-app
+  strategy:
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        app: openjdk-web-basic-s2i
+        application: openjdk-app
+        deploymentConfig: openjdk-app
+      name: openjdk-app
+    spec:
+      containers:
+      - image: openjdk-app
+        imagePullPolicy: Always
+        name: openjdk-app
+        ports:
+        - containerPort: 8778
+          name: jolokia
+          protocol: TCP
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 8443
+          name: https
+          protocol: TCP
+        resources: {}
+      terminationGracePeriodSeconds: 75
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - openjdk-app
+      from:
+        kind: ImageStreamTag
+        name: openjdk-app:latest
+    type: ImageChange
+  - type: ConfigChange

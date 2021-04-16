@@ -1,0 +1,144 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    description: The application's http port.
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  labels:
+    app: openjdk-web-basic-s2i
+    application: openjdk-app
+  name: openjdk-app
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    deploymentConfig: openjdk-app
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    description: Route for application's http service.
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  labels:
+    app: openjdk-web-basic-s2i
+    application: openjdk-app
+  name: openjdk-app
+spec:
+  host: ""
+  subdomain: ""
+  to:
+    kind: ""
+    name: openjdk-app
+    weight: null
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  labels:
+    app: openjdk-web-basic-s2i
+    application: openjdk-app
+  name: openjdk-app
+spec:
+  lookupPolicy:
+    local: false
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  labels:
+    app: openjdk-web-basic-s2i
+    application: openjdk-app
+  name: openjdk-app
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: openjdk-app:latest
+  postCommit: {}
+  resources: {}
+  source:
+    contextDir: undertow-servlet
+    git:
+      ref: master
+      uri: https://github.com/jboss-openshift/openshift-quickstarts
+    type: Git
+  strategy:
+    sourceStrategy:
+      forcePull: true
+      from:
+        kind: ImageStreamTag
+        name: java:latest
+        namespace: openshift
+    type: Source
+  triggers:
+  - imageChange: {}
+    type: ImageChange
+  - type: ConfigChange
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  labels:
+    app: openjdk-web-basic-s2i
+    application: openjdk-app
+  name: openjdk-app
+spec:
+  replicas: 1
+  selector:
+    deploymentConfig: openjdk-app
+  strategy:
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        app: openjdk-web-basic-s2i
+        application: openjdk-app
+        deploymentConfig: openjdk-app
+      name: openjdk-app
+    spec:
+      containers:
+      - image: openjdk-app
+        imagePullPolicy: Always
+        name: openjdk-app
+        ports:
+        - containerPort: 8778
+          name: jolokia
+          protocol: TCP
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 8443
+          name: https
+          protocol: TCP
+        resources: {}
+      terminationGracePeriodSeconds: 75
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - openjdk-app
+      from:
+        kind: ImageStreamTag
+        name: openjdk-app:latest
+    type: ImageChange
+  - type: ConfigChange
