@@ -8,3 +8,9 @@ resources:
 - bc.yml
 patches:
 - patch.yml
+configMapGenerator:
+- name: sample-cm
+  files:
+  - mew.txt
+  options:
+    disableNameSuffixHash: true
